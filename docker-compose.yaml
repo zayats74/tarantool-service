@@ -1,0 +1,31 @@
+services:
+  tarantool-db:
+    image: tarantool/tarantool:3.2.0
+    container_name: tarantool-db
+    ports:
+      - "3301:3301"
+    environment:
+      - TARANTOOL_USERNAME=${TARANTOOL_USERNAME}
+      - TARANTOOL_PASSWORD=${TARANTOOL_PASSWORD}
+    volumes:
+      - ./src/main/resources/db/migration:/opt/tarantool/migrations
+    command: tarantool /opt/tarantool/migrations/init_db.lua
+    networks:
+      - net
+  tarantool-service:
+      container_name: tarantool-service
+      build: .
+      environment:
+        - TARANTOOL_USERNAME=${TARANTOOL_USERNAME}
+        - TARANTOOL_PASSWORD=${TARANTOOL_PASSWORD}
+      ports:
+        - '8080:8080'
+      depends_on:
+        - tarantool-db
+      networks:
+        - net
+networks:
+  net:
+    driver: bridge
+volumes:
+  tarantool-data:
