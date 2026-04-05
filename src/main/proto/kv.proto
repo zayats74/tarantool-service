@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package kvservice;
+
+//requests
+message PutKVRequest {
+  string key = 1;
+  optional bytes value = 2;
+}
+message GetKVRequest {
+   string key = 1;
+}
+message DeleteKVRequest {
+   string key = 1;
+}
+message RangeKVRequest {
+  string key_since = 1;
+  string key_to = 2;
+}
+
+//response
+message GetKVResponse {
+  optional bytes value = 1;
+}
+message RangeKVResponse {
+  string key = 1;
+  optional bytes value = 2;
+}
+message CountKVResponse {
+  int64 count = 1;
+}
+
+//service
+service KVService{
+    rpc putKV(PutKVRequest) returns (google.protobuf.Empty);
+    rpc getKV(GetKVRequest) returns (GetKVResponse);
+    rpc deleteKV(DeleteKVRequest) returns (google.protobuf.Empty);
+    rpc rangeKV(RangeKVRequest) returns (stream RangeKVResponse);
+    rpc count(google.protobuf.Empty) returns (CountKVResponse);
+}
