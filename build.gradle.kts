@@ -2,7 +2,7 @@ import com.google.protobuf.gradle.id
 
 plugins {
 	java
-	id("org.springframework.boot") version "4.0.5"
+	id("org.springframework.boot") version "3.2.4"
 	id("io.spring.dependency-management") version "1.1.7"
 	id("com.google.protobuf") version "0.9.5"
 }
@@ -23,19 +23,35 @@ repositories {
 extra["springGrpcVersion"] = "1.0.2"
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	implementation("org.springframework.boot:spring-boot-starter-flyway")
-	implementation("org.springframework.boot:spring-boot-starter-webmvc")
-	implementation("io.grpc:grpc-services")
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2")
-	implementation("org.springframework.grpc:spring-grpc-server-web-spring-boot-starter")
-	compileOnly("org.projectlombok:lombok")
-	developmentOnly("org.springframework.boot:spring-boot-docker-compose")
-	annotationProcessor("org.projectlombok:lombok")
-	testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
-	testImplementation("org.springframework.boot:spring-boot-starter-flyway-test")
-	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
-	testImplementation("org.springframework.grpc:spring-grpc-test")
+    compileOnly("javax.annotation:javax.annotation-api:1.3.2")
+    implementation("jakarta.annotation:jakarta.annotation-api:2.1.1")
+    //grpc
+    implementation("io.grpc:grpc-netty:1.75.0")
+    implementation("io.grpc:grpc-protobuf:1.59.0")
+    implementation("io.grpc:grpc-stub:1.59.0")
+    implementation("io.grpc:grpc-services:1.59.0")
+    implementation("net.devh:grpc-server-spring-boot-starter:2.15.0.RELEASE")
+
+    //protobuf
+    implementation("com.google.protobuf:protobuf-java:3.24.0")
+    implementation("com.google.protobuf:protobuf-java-util:3.24.0")
+
+    //tarantool
+    implementation("io.tarantool:tarantool-java-sdk:1.5.0")
+    implementation("io.netty:netty-all:4.1.104.Final")
+    implementation("io.tarantool:cartridge-driver:0.13.0")
+    implementation("io.tarantool:tarantool-client:1.5.0")
+    implementation("io.tarantool:spring-data-tarantool:0.6.1")
+    implementation("org.springframework.data:spring-data-keyvalue:3.2.0")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.15.0")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.15.0")
+
+    compileOnly("org.projectlombok:lombok:1.18.30")
+    annotationProcessor("org.projectlombok:lombok:1.18.30")
+    testCompileOnly("org.projectlombok:lombok:1.18.30")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.30")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	//testImplementation("org.springframework.grpc:spring-grpc-test")
 	testCompileOnly("org.projectlombok:lombok")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	testAnnotationProcessor("org.projectlombok:lombok")
@@ -49,11 +65,11 @@ dependencyManagement {
 
 protobuf {
 	protoc {
-		artifact = "com.google.protobuf:protoc"
+		artifact = "com.google.protobuf:protoc:3.24.0"
 	}
 	plugins {
 		id("grpc") {
-			artifact = "io.grpc:protoc-gen-grpc-java"
+			artifact = "io.grpc:protoc-gen-grpc-java:1.59.0"
 		}
 	}
 	generateProtoTasks {

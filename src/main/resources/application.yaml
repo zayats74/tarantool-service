@@ -1,3 +1,24 @@
 spring:
   application:
     name: tarantool-service
+  logging:
+    level:
+      root: INFO
+      com.example.tarantool_service: DEBUG
+      org.springframework.data.tarantool: DEBUG
+      io.tarantool.driver: DEBUG
+      net.devh.boot.grpc: DEBUG
+      io.grpc: DEBUG
+
+
+tarantool:
+  host: ${TARANTOOL_HOST:localhost}
+  port: ${TARANTOOL_PORT:3301}
+  username: ${TARANTOOL_USERNAME:tarantool}
+  password: ${TARANTOOL_PASSWORD:tarantool}
+  space: KV
+
+grpc:
+  server:
+    port: 9090
+    reflection-service-enabled: true
